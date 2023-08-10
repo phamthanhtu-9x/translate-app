@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex px-3 py-2 space-x-2 text-white align-middle bg-blue-500 rounded-lg login-button hover:opacity-80"
+    class="flex px-3 py-2 font-medium align-middle transition ease-in-out rounded-lg text-gray login-button hover:text-blue-500"
   >
     <span>
       <slot name="icon" />
