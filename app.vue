@@ -4,10 +4,9 @@ useHead({
 });
 </script>
 <template>
-  <Body>
+  <div>
     <NuxtLayout>
-      <NuxtLoadingIndicator />
       <NuxtPage />
     </NuxtLayout>
-  </Body>
+  </div>
 </template>
