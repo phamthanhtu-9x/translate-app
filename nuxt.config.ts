@@ -11,4 +11,9 @@ export default defineNuxtConfig({
       'Open+Sans': true,
     },
   },
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.API_URL,
+    },
+  },
 });
