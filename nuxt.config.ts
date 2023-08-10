@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      'Open+Sans': true,
+      Inter: true,
     },
   },
   runtimeConfig: {
