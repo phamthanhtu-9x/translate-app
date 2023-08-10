@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   css: [`assets/css/main.css`],
   devtools: {enabled: true},
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt'],
   head: {
     charset: 'utf-8',
     viewport: 'width=device-width, initial-scale=1',
@@ -15,5 +15,8 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.API_URL,
     },
+  },
+  pinia: {
+    autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],
   },
 });
