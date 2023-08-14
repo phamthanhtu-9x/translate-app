@@ -25,11 +25,10 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
     <div class="flex">
       <div class="flex-1">
         <div class="flex items-center px-5 mb-5 space-x-3">
-          <div><UiTextNormal>Phát hiện ngôn ngữ</UiTextNormal></div>
+          <div><UiTextNormal>Detect language</UiTextNormal></div>
           <ul class="flex space-x-3">
-            <li><UiTextTag :active="true">Anh</UiTextTag></li>
-            <li><UiTextTag>Việt</UiTextTag></li>
-            <li><UiTextTag>Hàn</UiTextTag></li>
+            <li><UiTextTag :active="true">English</UiTextTag></li>
+            <li><UiTextTag>Vietnamese</UiTextTag></li>
           </ul>
           <UiCirlceButton>
             <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
@@ -43,9 +42,8 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
       <div class="flex-1">
         <div class="flex px-5 mb-5">
           <ul class="flex space-x-3">
-            <li><UiTextTag :active="true">Việt</UiTextTag></li>
-            <li><UiTextTag>Anh</UiTextTag></li>
-            <li><UiTextTag>Hàn</UiTextTag></li>
+            <li><UiTextTag :active="true">Vietnamese</UiTextTag></li>
+            <li><UiTextTag>English</UiTextTag></li>
           </ul>
         </div>
         <UiTextArea />
