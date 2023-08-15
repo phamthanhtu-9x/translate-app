@@ -10,10 +10,7 @@ const {status, signIn, signOut} = useAuth();
         </NuxtLink>
         <div class="flex space-x-3 header-actions">
           <Button v-if="status !== 'authenticated'" @click="signIn">Login</Button>
-          <NuxtLink to="/dashboard">
-            <div class="text-3xl font-medium text-blue-500 logo">Dashboard</div>
-            <Button v-if="status === 'authenticated'" @click="signOut">Logout</Button>
-          </NuxtLink>
+          <Button v-else @click="signOut">Logout</Button>
         </div>
       </div>
     </UiWrapperContent>

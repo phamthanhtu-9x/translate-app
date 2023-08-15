@@ -4,7 +4,7 @@ const runtimeConfig = useRuntimeConfig();
 
 export default NuxtAuthHandler({
   providers: [
-    GoogleProvider({
+    GoogleProvider.default({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     }),
