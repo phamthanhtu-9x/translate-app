@@ -46,7 +46,7 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
             <li><UiTextTag>English</UiTextTag></li>
           </ul>
         </div>
-        <UiTextArea />
+        <UiTextArea :loading="false" :disabled="true">Translation</UiTextArea>
       </div>
     </div>
   </UiWrapperContent>
