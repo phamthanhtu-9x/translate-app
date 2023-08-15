@@ -1,8 +1,8 @@
 <script setup lang="ts">
-interface Tag {
+interface TagProps {
   active?: boolean;
 }
-const {active} = defineProps<Tag>();
+const {active} = defineProps<TagProps>();
 </script>
 <template>
   <div
