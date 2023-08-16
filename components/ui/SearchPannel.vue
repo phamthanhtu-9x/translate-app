@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface SearchPannelProps {
-	languageList: any,
+	languageList?: any,
 	languageActive?: any,
 }
 const {languageActive} = defineProps<SearchPannelProps>()
