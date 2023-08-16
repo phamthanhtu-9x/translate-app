@@ -6,7 +6,7 @@ enum EOPTIONSTRANSLATE {
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
 
 const handleTextAreaChange = (value: string) => {
-  console.log('in data', value);
+  console.log(value);
 }
 
 </script>

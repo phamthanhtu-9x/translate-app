@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   css: [`assets/css/main.css`],
   devtools: {enabled: true},
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt', '@sidebase/nuxt-auth', 'nuxt-headlessui'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt', '@sidebase/nuxt-auth', 'nuxt-headlessui', 'nuxt-lodash'],
   head: {
     charset: 'utf-8',
     viewport: 'width=device-width, initial-scale=1',
@@ -21,6 +21,17 @@ export default defineNuxtConfig({
   },
   headlessui: {
     prefix: 'Headless'
+  },
+  lodash: {
+    prefix: "_",
+    prefixSkip: ["string"],
+    upperAfterPrefix: false,
+    exclude: [],
+    alias: [
+      ["camelCase", "stringToCamelCase"], // => stringToCamelCase
+      ["kebabCase", "stringToKebab"], // => stringToKebab
+      ["isDate", "isLodashDate"], // => _isLodashDate
+    ],
   },
 
   auth: {

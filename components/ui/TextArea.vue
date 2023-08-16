@@ -9,9 +9,10 @@ const emit = defineEmits(['onChangeTextarea']);
 const textAreaRef = ref();
 
 const handleChange = () => {
-  setTimeout(() => {
-    emit('onChangeTextarea', textAreaRef.value.innerText.trim());
+  const changeDebounce = _debounce(() => {
+    emit('onChangeTextarea', textAreaRef.value.innerText);
   }, 1000);
+  changeDebounce();
 }
 
 onMounted(() => {
