@@ -1,10 +1,8 @@
-import {apiBase, token} from './config';
+import {api} from './config';
 
 export const getAllLanguage = () => {
-  return $fetch(`${apiBase()} + /api/allLangue`, {
-    method: 'get',
-    headers: {
-      Authorization: `Bearer ${token()}`,
-    },
+  return api({
+    url: '/getAllLanguage',
+    method: 'GET'
   });
 };
