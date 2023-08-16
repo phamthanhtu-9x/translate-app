@@ -4,6 +4,11 @@ enum EOPTIONSTRANSLATE {
   FILE = 'file',
 }
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
+
+const handleTextAreaChange = (value: string) => {
+  console.log('in data', value);
+}
+
 </script>
 <template>
   <UiWrapperContent>
@@ -56,7 +61,7 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :focus="true"/>
+        <UiTextArea :edited="true" :focus="true" @onChangeTextarea="handleTextAreaChange"/>
       </div>
       <UiCirlceButton>
         <Icon name="mdi:swap-horizontal" size="1.5em" color="gray" />
@@ -91,7 +96,7 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :loading="false" :disabled="true">Translation</UiTextArea>
+        <UiTextArea :loading="false">Translation</UiTextArea>
       </div>
     </div>
   </UiWrapperContent>

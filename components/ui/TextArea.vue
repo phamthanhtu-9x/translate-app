@@ -1,11 +1,19 @@
 <script setup lang="ts">
 interface TextAreaProps {
   focus?: boolean,
-  disabled?: boolean;
+  edited?: boolean;
   loading?: boolean;
 }
-const {disabled, loading, focus} = defineProps<TextAreaProps>();
+const {edited, loading, focus} = defineProps<TextAreaProps>();
+const emit = defineEmits(['onChangeTextarea']);
 const textAreaRef = ref();
+
+const handleChange = () => {
+  setTimeout(() => {
+    emit('onChangeTextarea', textAreaRef.value.innerText.trim());
+  }, 1000);
+}
+
 onMounted(() => {
   nextTick(() => {
     if(focus) {
@@ -17,15 +25,16 @@ onMounted(() => {
 <template>
   <div
     ref="textAreaRef"
-    class="shadow-md rounded-lg w-full min-h-[500px] border border-gray-100 p-4 outline-blue-200 text-2xl relative"
+    class="shadow-md rounded-lg w-full min-h-[500px] border border-gray-100 p-4 outline-blue-200 text-2xl relative break-all"
     :class="{
-      'bg-gray-100': disabled,
+      'bg-gray-100': !edited,
     }"
-    :contenteditable="!disabled ? true : false"
+    :contenteditable="edited ? true : false"
+    @keydown="handleChange"
   >
     <div v-if="loading" class="w-full p-5 text-center">
       <UiCircleLoading />
     </div>
-    <slot v-if="disabled && !loading" />
+    <slot v-if="!edited && !loading" />
   </div>
 </template>

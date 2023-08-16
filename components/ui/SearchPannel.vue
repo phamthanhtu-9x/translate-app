@@ -4,11 +4,11 @@ interface SearchPannelProps {
 	languageActive?: any,
 }
 const {languageActive} = defineProps<SearchPannelProps>()
-const input = ref();
+const inputRef = ref();
 
 onMounted(() => {
   nextTick(() => {
-    input.value.focus();
+    inputRef.value.focus();
   })
 })
 </script>
@@ -20,7 +20,7 @@ onMounted(() => {
       <div class="flex items-center justify-center flex-shrink-0 mr-2 w-7 h-7">
         <Icon name="mdi:magnify" size="1.5em" color="gray"></Icon>
       </div>
-      <input ref="input" type="text" placeholder="Language Search" class="w-full outline-none" />
+      <input ref="inputRef" type="text" placeholder="Language Search" class="w-full outline-none" />
     </div>
     <ul class="grid grid-cols-3 grid-rows-3 gap-4">
       <li>
