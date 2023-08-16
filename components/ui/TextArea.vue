@@ -9,9 +9,10 @@ const emit = defineEmits(['onChangeTextarea']);
 const textAreaRef = ref();
 
 const handleChange = () => {
+  const WAITING_TIME = 1000;
   const changeDebounce = _debounce(() => {
     emit('onChangeTextarea', textAreaRef.value.innerText);
-  }, 1000);
+  }, WAITING_TIME);
   changeDebounce();
 }
 
