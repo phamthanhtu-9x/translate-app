@@ -23,7 +23,7 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
       />
     </div>
     <div class="flex">
-      <div class="flex-1">
+      <div class="relative flex-1">
         <div class="flex items-center px-5 mb-5 space-x-3">
           <div>
             <UiTextNormal>Detect language</UiTextNormal>
@@ -36,19 +36,14 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
               <UiTextTag>Vietnamese</UiTextTag>
             </li>
           </ul>
-          <HeadlessPopover class="relative">
+          <HeadlessPopover>
             <HeadlessPopoverButton class="outline-none">
               <UiCirlceButton>
                 <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
               </UiCirlceButton>
             </HeadlessPopoverButton>
-            <HeadlessPopoverPanel class="absolute z-10">
-              <ul>
-                <li>Vietnamese</li>
-                <li>Vietnamese</li>
-                <li>Vietnamese</li>
-                <li>Vietnamese</li>
-              </ul>
+            <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
+              <UiSearchPannel />
             </HeadlessPopoverPanel>
           </HeadlessPopover>
         </div>
