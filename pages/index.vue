@@ -4,7 +4,6 @@ enum EOPTIONSTRANSLATE {
   FILE = 'file',
 }
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
-
 </script>
 <template>
   <UiWrapperContent>
@@ -43,12 +42,21 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
                 <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
               </UiCirlceButton>
             </HeadlessPopoverButton>
-            <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-              <UiSearchPannel />
-            </HeadlessPopoverPanel>
+            <HeadlessTransitionRoot
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
+                <UiSearchPannel />
+              </HeadlessPopoverPanel>
+            </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea />
+        <UiTextArea :focus="true"/>
       </div>
       <UiCirlceButton>
         <Icon name="mdi:swap-horizontal" size="1.5em" color="gray" />
@@ -69,9 +77,18 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
                 <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
               </UiCirlceButton>
             </HeadlessPopoverButton>
-            <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-              <UiSearchPannel />
-            </HeadlessPopoverPanel>
+            <HeadlessTransitionRoot
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
+                <UiSearchPannel />
+              </HeadlessPopoverPanel>
+            </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
         <UiTextArea :loading="false" :disabled="true">Translation</UiTextArea>
