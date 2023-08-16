@@ -4,7 +4,6 @@ enum EOPTIONSTRANSLATE {
   FILE = 'file',
 }
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
-const 
 </script>
 <template>
   <UiWrapperContent>
