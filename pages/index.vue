@@ -53,8 +53,8 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
       <UiCirlceButton>
         <Icon name="mdi:swap-horizontal" size="1.5em" color="gray" />
       </UiCirlceButton>
-      <div class="flex-1">
-        <div class="flex px-5 mb-5">
+      <div class="relative flex-1">
+        <div class="flex px-5 mb-5 space-x-3">
           <ul class="flex space-x-3">
             <li>
               <UiTextTag :active="true">Vietnamese</UiTextTag>
@@ -63,6 +63,16 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
               <UiTextTag>English</UiTextTag>
             </li>
           </ul>
+          <HeadlessPopover>
+            <HeadlessPopoverButton class="outline-none">
+              <UiCirlceButton>
+                <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
+              </UiCirlceButton>
+            </HeadlessPopoverButton>
+            <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
+              <UiSearchPannel />
+            </HeadlessPopoverPanel>
+          </HeadlessPopover>
         </div>
         <UiTextArea :loading="false" :disabled="true">Translation</UiTextArea>
       </div>
