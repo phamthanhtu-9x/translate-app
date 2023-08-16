@@ -7,8 +7,7 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
 
 const handleTextAreaChange = (value: string) => {
   console.log(value);
-}
-
+};
 </script>
 <template>
   <UiWrapperContent>
@@ -61,7 +60,7 @@ const handleTextAreaChange = (value: string) => {
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :edited="true" :focus="true" @onChangeTextarea="handleTextAreaChange"/>
+        <UiTextArea :edited="true" :focus="true" @onChangeTextarea="handleTextAreaChange" />
       </div>
       <UiCirlceButton>
         <Icon name="mdi:swap-horizontal" size="1.5em" color="gray" />

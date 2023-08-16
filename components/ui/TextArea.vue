@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface TextAreaProps {
-  focus?: boolean,
+  focus?: boolean;
   edited?: boolean;
   loading?: boolean;
 }
@@ -14,15 +14,15 @@ const handleChange = () => {
     emit('onChangeTextarea', textAreaRef.value.innerText);
   }, WAITING_TIME);
   changeDebounce();
-}
+};
 
 onMounted(() => {
   nextTick(() => {
-    if(focus) {
+    if (focus) {
       textAreaRef.value.focus();
     }
-  })
-})
+  });
+});
 </script>
 <template>
   <div

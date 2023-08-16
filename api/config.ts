@@ -1,8 +1,8 @@
 const {data} = useAuth();
 const runtimeConfig = useRuntimeConfig();
 interface ApiProps {
-  url: string,
-  method: any,
+  url: string;
+  method: any;
 }
 
 export const api = (props: ApiProps) => {
@@ -14,4 +14,4 @@ export const api = (props: ApiProps) => {
       Authorization: `Bearer ${data.value?.access_token}`,
     },
   });
-}
+};
