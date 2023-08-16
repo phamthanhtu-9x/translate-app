@@ -4,6 +4,7 @@ enum EOPTIONSTRANSLATE {
   FILE = 'file',
 }
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
+const 
 </script>
 <template>
   <UiWrapperContent>
@@ -36,9 +37,21 @@ const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
               <UiTextTag>Vietnamese</UiTextTag>
             </li>
           </ul>
-          <UiCirlceButton>
-            <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
-          </UiCirlceButton>
+          <HeadlessPopover class="relative">
+            <HeadlessPopoverButton class="outline-none">
+              <UiCirlceButton>
+                <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
+              </UiCirlceButton>
+            </HeadlessPopoverButton>
+            <HeadlessPopoverPanel class="absolute z-10">
+              <ul>
+                <li>Vietnamese</li>
+                <li>Vietnamese</li>
+                <li>Vietnamese</li>
+                <li>Vietnamese</li>
+              </ul>
+            </HeadlessPopoverPanel>
+          </HeadlessPopover>
         </div>
         <UiTextArea />
       </div>

@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   css: [`assets/css/main.css`],
   devtools: {enabled: true},
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt', '@sidebase/nuxt-auth'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt', '@sidebase/nuxt-auth', 'nuxt-headlessui'],
   head: {
     charset: 'utf-8',
     viewport: 'width=device-width, initial-scale=1',
@@ -18,6 +18,9 @@ export default defineNuxtConfig({
   },
   pinia: {
     autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],
+  },
+  headlessui: {
+    prefix: 'Headless'
   },
 
   auth: {
