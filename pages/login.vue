@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['auth'],
+});
 
 const {signIn} = useAuth();
 
@@ -28,8 +31,10 @@ const handleSignIn = (provider: String) => {
     <div class="w-full max-w-md mt-10">
       <form class="bg-white shadow-lg rounded px-12 pt-8 pb-10 mb-4">
         <!-- @csrf -->
-        <h1 class="text-2xl text-center font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-8">
-            Log in to your account
+        <h1
+          class="text-2xl text-center font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-8"
+        >
+          Log in to your account
         </h1>
         <div class="mb-4">
           <input
@@ -66,11 +71,9 @@ const handleSignIn = (provider: String) => {
 
           <!-- <p class="text-center my-2">or</p> -->
           <div
-            class="my-4 w-full flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
-            <p
-              class="mx-4 mb-0 text-center dark:text-white">
-              or
-            </p>
+            class="my-4 w-full flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300"
+          >
+            <p class="mx-4 mb-0 text-center dark:text-white">or</p>
           </div>
 
           <button
