@@ -1,8 +1,10 @@
 import {api} from './config';
 
-export const getAllLanguage = () => {
+
+export const getSupportedLanguages = () => {
   return api({
-    url: '/getAllLanguage',
-    method: 'GET'
+    url: '/translate/get-supported-languages',
+    method: 'GET',
+    hasAuth: false
   });
 };

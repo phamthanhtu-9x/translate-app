@@ -1,10 +1,21 @@
 <script setup lang="ts">
+import { Language } from 'types';
+
 interface SearchPannelProps {
   languageList?: any;
   languageActive?: any;
 }
-const {languageActive} = defineProps<SearchPannelProps>();
+const {languageList, languageActive} = defineProps<SearchPannelProps>();
 const inputRef = ref();
+const emit = defineEmits(['selectedLanguage'])
+
+const languages = computed(() => {
+  return languageList.data.languages;
+})
+
+const selectedLanguage = (language: Language) => {
+  emit('selectedLanguage', language)
+}
 
 onMounted(() => {
   nextTick(() => {
@@ -13,7 +24,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="min-h-[500px] border border-gray-100 bg-white shadow-md rounded-lg w-full p-4">
+  <div class="h-[500px] border border-gray-100 bg-white shadow-md rounded-lg w-full p-4 overflow-auto">
     <div
       class="flex items-center p-1.5 border rounded-md search-input border-blue-200 focus:border-blue-100 mb-3"
     >
@@ -23,15 +34,16 @@ onMounted(() => {
       <input ref="inputRef" type="text" placeholder="Language Search" class="w-full outline-none" />
     </div>
     <ul class="grid grid-cols-3 grid-rows-3 gap-4">
-      <li>
+      <li v-for="language in languages">
         <div
           class="flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-gray-100"
           :class="{
-            'text-blue-500 bg-blue-200': languageActive,
+            'text-blue-500 bg-blue-200 pointer-events-none': language.language === languageActive,
           }"
+          @click="selectedLanguage(language)"
         >
-          Vietnamese
-          <Icon v-if="languageActive" name="mdi:check" size="1.5em" color="#3b82f6"></Icon>
+          {{ language.name }}
+          <Icon v-if="language.language === languageActive" name="mdi:check" size="1.5em" color="#3b82f6"></Icon>
         </div>
       </li>
     </ul>
