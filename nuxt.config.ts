@@ -25,17 +25,17 @@ export default defineNuxtConfig({
     autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],
   },
   headlessui: {
-    prefix: 'Headless'
+    prefix: 'Headless',
   },
   lodash: {
-    prefix: "_",
-    prefixSkip: ["string"],
+    prefix: '_',
+    prefixSkip: ['string'],
     upperAfterPrefix: false,
     exclude: [],
     alias: [
-      ["camelCase", "stringToCamelCase"], // => stringToCamelCase
-      ["kebabCase", "stringToKebab"], // => stringToKebab
-      ["isDate", "isLodashDate"], // => _isLodashDate
+      ['camelCase', 'stringToCamelCase'], // => stringToCamelCase
+      ['kebabCase', 'stringToKebab'], // => stringToKebab
+      ['isDate', 'isLodashDate'], // => _isLodashDate
     ],
   },
 

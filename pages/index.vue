@@ -1,13 +1,44 @@
 <script setup lang="ts">
+import {moveLanguageToTop} from '../helpers/translate.helper';
+import {Language} from '../types/index';
+
 enum EOPTIONSTRANSLATE {
   TEXT = 'text',
   FILE = 'file',
 }
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
+const currentLanguageIn: Language = reactive({
+  name: '',
+  code: '',
+});
+const currentLanguageOut: Language = reactive({
+  name: 'Vietnamese',
+  code: 'vi',
+});
+const state = reactive<{
+  listLanguageIn: Language[];
+  listLanguageOut: Language[];
+  transitionContent: string;
+}>({
+  listLanguageIn: [],
+  listLanguageOut: [
+    {
+      name: 'Vietnamese',
+      code: 'vi',
+    },
+  ],
+  transitionContent: 'Bản dịch',
+});
+const listLanguageIn = computed(() => {
+  return moveLanguageToTop(state.listLanguageIn, currentLanguageIn);
+});
+const listLanguageOut = computed(() => {
+  return moveLanguageToTop(state.listLanguageOut, currentLanguageOut);
+});
 
 const handleTextAreaChange = (value: string) => {
   console.log(value);
-}
+};
 
 </script>
 <template>
@@ -33,12 +64,9 @@ const handleTextAreaChange = (value: string) => {
           <div>
             <UiTextNormal>Detect language</UiTextNormal>
           </div>
-          <ul class="flex space-x-3">
-            <li>
-              <UiTextTag :active="true">English</UiTextTag>
-            </li>
-            <li>
-              <UiTextTag>Vietnamese</UiTextTag>
+          <ul v-if="currentLanguageIn.code !== ''" class="flex space-x-3">
+            <li v-for="language in listLanguageIn" :key="language.code">
+              <UiTextTag :active="language.code === currentLanguageIn.code">{{ language.name }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
@@ -61,19 +89,18 @@ const handleTextAreaChange = (value: string) => {
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :edited="true" :focus="true" @onChangeTextarea="handleTextAreaChange"/>
+        <UiTextArea :edited="true" :focus="true" @onChangeTextarea="handleTextAreaChange" />
       </div>
       <UiCirlceButton>
         <Icon name="mdi:swap-horizontal" size="1.5em" color="gray" />
       </UiCirlceButton>
       <div class="relative flex-1">
         <div class="flex px-5 mb-5 space-x-3">
-          <ul class="flex space-x-3">
-            <li>
-              <UiTextTag :active="true">Vietnamese</UiTextTag>
-            </li>
-            <li>
-              <UiTextTag>English</UiTextTag>
+          <ul v-if="currentLanguageOut.code !== ''" class="flex space-x-3">
+            <li v-for="language in listLanguageOut" :key="language.code">
+              <UiTextTag :active="language.code === currentLanguageOut.code">{{
+                language.name
+              }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
@@ -96,7 +123,7 @@ const handleTextAreaChange = (value: string) => {
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :loading="false">Translation</UiTextArea>
+        <UiTextArea :loading="false">{{ state.transitionContent }}</UiTextArea>
       </div>
     </div>
   </UiWrapperContent>

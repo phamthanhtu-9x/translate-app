@@ -1,16 +1,16 @@
 <script setup lang="ts">
 interface SearchPannelProps {
-	languageList?: any,
-	languageActive?: any,
+  languageList?: any;
+  languageActive?: any;
 }
-const {languageActive} = defineProps<SearchPannelProps>()
+const {languageActive} = defineProps<SearchPannelProps>();
 const inputRef = ref();
 
 onMounted(() => {
   nextTick(() => {
     inputRef.value.focus();
-  })
-})
+  });
+});
 </script>
 <template>
   <div class="min-h-[500px] border border-gray-100 bg-white shadow-md rounded-lg w-full p-4">
@@ -24,16 +24,16 @@ onMounted(() => {
     </div>
     <ul class="grid grid-cols-3 grid-rows-3 gap-4">
       <li>
-				<div
-					class="flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-gray-100"
-					:class="{
-						'text-blue-500 bg-blue-200': languageActive
-					}"
-				>
-					Vietnamese
-					<Icon v-if="languageActive" name="mdi:check" size="1.5em" color="#3b82f6"></Icon>
-				</div>
-			</li>
+        <div
+          class="flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-gray-100"
+          :class="{
+            'text-blue-500 bg-blue-200': languageActive,
+          }"
+        >
+          Vietnamese
+          <Icon v-if="languageActive" name="mdi:check" size="1.5em" color="#3b82f6"></Icon>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
