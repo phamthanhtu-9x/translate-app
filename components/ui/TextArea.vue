@@ -33,7 +33,7 @@ onMounted(() => {
 <template>
   <div
     ref="textAreaRef"
-    class="shadow-md rounded-lg w-full min-h-[500px] border border-gray-100 p-4 outline-blue-200 text-2xl relative break-all"
+    class="shadow-md rounded-lg w-full min-h-[500px] border border-gray-100 p-4 outline-blue-200 text-xl relative break-work"
     :class="{
       'bg-gray-100': !edited,
     }"

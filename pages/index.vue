@@ -168,10 +168,8 @@ const handleSelectedLanguageOut = (language: Language) => {
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :loading="false">
-          <span class="" v-html="state.transitionContent" /><span v-if="state.translateLoading"
-            >...</span
-          >
+        <UiTextArea :loading="state.translateLoading">
+          <span v-html="state.transitionContent" />
         </UiTextArea>
       </div>
     </div>
