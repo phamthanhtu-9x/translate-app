@@ -8,16 +8,19 @@ enum EOPTIONSTRANSLATE {
   TEXT = 'text',
   FILE = 'file',
 }
+enum ETRANSLATE {
+  PLACEHOLDER = 'Translation',
+  LANGUAGE_OUT_DEFAULT = 'vi',
+}
+
 const buttonLanguageIn = ref();
 const buttonLanguageOut = ref();
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
 const currentLanguageIn: Language = reactive({
-  name: '',
   language: '',
 });
 const currentLanguageOut: Language = reactive({
-  name: 'Vietnamese',
-  language: 'vi',
+  language: ETRANSLATE.LANGUAGE_OUT_DEFAULT,
 });
 const state = reactive<{
   languagesListIn: Language[];
@@ -28,11 +31,10 @@ const state = reactive<{
   languagesListIn: [],
   languagesListOut: [
     {
-      name: 'Vietnamese',
-      language: 'vi',
+      language: ETRANSLATE.LANGUAGE_OUT_DEFAULT,
     },
   ],
-  transitionContent: 'Bản dịch',
+  transitionContent: ETRANSLATE.PLACEHOLDER,
   translateLoading: false,
 });
 const languagesListIn = computed(() => {
@@ -44,9 +46,15 @@ const languagesListOut = computed(() => {
 
 const {data: dataLanguages} = await useAsyncData('languages', () => getSupportedLanguages());
 
+const getLanguageName = (source: string) => {
+  return dataLanguages.value?.data.languages.find(
+    (language: Language) => language.language === source,
+  ).name;
+};
+
 const handleTextAreaChange = async (value: string, isValid: boolean) => {
   if (value === '' || !isValid) {
-    state.transitionContent = 'Bản dịch';
+    state.transitionContent = ETRANSLATE.PLACEHOLDER;
     return;
   }
 
@@ -67,6 +75,11 @@ const handleTextAreaChange = async (value: string, isValid: boolean) => {
 
   state.translateLoading = false;
   state.transitionContent = dataTranslate.value?.data;
+
+  if (currentLanguageIn.language !== dataTranslate.value?.source) {
+    currentLanguageIn.name = getLanguageName(dataTranslate.value?.source);
+    currentLanguageIn.language = dataTranslate.value?.source;
+  }
 };
 const handleSelectedLanguageIn = (language: Language) => {
   console.log('selected in', language);
@@ -140,7 +153,7 @@ const handleSelectedLanguageOut = (language: Language) => {
           <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListOut" :key="language.language">
               <UiTextTag :active="language.language === currentLanguageOut.language">{{
-                language.name
+                getLanguageName(language.language)
               }}</UiTextTag>
             </li>
           </ul>
