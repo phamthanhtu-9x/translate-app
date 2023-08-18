@@ -1,4 +1,4 @@
-export interface Language {
+export type Language = {
   name: string;
-  code: string;
+  language: string;
 }

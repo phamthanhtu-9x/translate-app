@@ -1,45 +1,57 @@
 <script setup lang="ts">
 import {moveLanguageToTop} from '../helpers/translate.helper';
 import {Language} from '../types/index';
+import {getSupportedLanguages} from '../api/language';
 
 enum EOPTIONSTRANSLATE {
   TEXT = 'text',
   FILE = 'file',
 }
+const buttonLanguageIn = ref();
+const buttonLanguageOut = ref();
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
 const currentLanguageIn: Language = reactive({
   name: '',
-  code: '',
+  language: '',
 });
 const currentLanguageOut: Language = reactive({
   name: 'Vietnamese',
-  code: 'vi',
+  language: 'vi',
 });
 const state = reactive<{
-  listLanguageIn: Language[];
-  listLanguageOut: Language[];
+  languagesListIn: Language[];
+  languagesListOut: Language[];
   transitionContent: string;
 }>({
-  listLanguageIn: [],
-  listLanguageOut: [
+  languagesListIn: [],
+  languagesListOut: [
     {
       name: 'Vietnamese',
-      code: 'vi',
+      language: 'vi',
     },
   ],
   transitionContent: 'Bản dịch',
 });
-const listLanguageIn = computed(() => {
-  return moveLanguageToTop(state.listLanguageIn, currentLanguageIn);
+const languagesListIn = computed(() => {
+  return moveLanguageToTop(state.languagesListIn, currentLanguageIn);
 });
-const listLanguageOut = computed(() => {
-  return moveLanguageToTop(state.listLanguageOut, currentLanguageOut);
+const languagesListOut = computed(() => {
+  return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
 });
+
+const { data: dataLanguages } = await useAsyncData('languages', () => getSupportedLanguages());
 
 const handleTextAreaChange = (value: string) => {
   console.log(value);
 };
-
+const handleSelectedLanguageIn = (language: Language) => {
+  console.log('selected in', language);
+  buttonLanguageIn.value.$el.click();
+}
+const handleSelectedLanguageOut = (language: Language) => {
+  console.log('selected out', language);
+  buttonLanguageOut.value.$el.click();
+}
 </script>
 <template>
   <UiWrapperContent>
@@ -64,13 +76,13 @@ const handleTextAreaChange = (value: string) => {
           <div>
             <UiTextNormal>Detect language</UiTextNormal>
           </div>
-          <ul v-if="currentLanguageIn.code !== ''" class="flex space-x-3">
-            <li v-for="language in listLanguageIn" :key="language.code">
-              <UiTextTag :active="language.code === currentLanguageIn.code">{{ language.name }}</UiTextTag>
+          <ul v-if="currentLanguageIn.language !== ''" class="flex space-x-3">
+            <li v-for="language in languagesListIn" :key="language.language">
+              <UiTextTag :active="language.language === currentLanguageIn.language">{{ language.name }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
-            <HeadlessPopoverButton class="outline-none">
+            <HeadlessPopoverButton ref="buttonLanguageIn" class="outline-none">
               <UiCirlceButton>
                 <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
               </UiCirlceButton>
@@ -84,7 +96,7 @@ const handleTextAreaChange = (value: string) => {
               leaveTo="opacity-0"
             >
               <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-                <UiSearchPannel />
+                <UiSearchPannel :language-list="dataLanguages" @selected-language="handleSelectedLanguageIn"/>
               </HeadlessPopoverPanel>
             </HeadlessTransitionRoot>
           </HeadlessPopover>
@@ -96,15 +108,15 @@ const handleTextAreaChange = (value: string) => {
       </UiCirlceButton>
       <div class="relative flex-1">
         <div class="flex px-5 mb-5 space-x-3">
-          <ul v-if="currentLanguageOut.code !== ''" class="flex space-x-3">
-            <li v-for="language in listLanguageOut" :key="language.code">
-              <UiTextTag :active="language.code === currentLanguageOut.code">{{
+          <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
+            <li v-for="language in languagesListOut" :key="language.language">
+              <UiTextTag :active="language.language === currentLanguageOut.language">{{
                 language.name
               }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
-            <HeadlessPopoverButton class="outline-none">
+            <HeadlessPopoverButton ref="buttonLanguageOut" class="outline-none">
               <UiCirlceButton>
                 <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
               </UiCirlceButton>
@@ -118,7 +130,7 @@ const handleTextAreaChange = (value: string) => {
               leaveTo="opacity-0"
             >
               <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-                <UiSearchPannel />
+                <UiSearchPannel :language-list="dataLanguages" :language-active="currentLanguageOut.language" @selected-language="handleSelectedLanguageOut"/>
               </HeadlessPopoverPanel>
             </HeadlessTransitionRoot>
           </HeadlessPopover>
