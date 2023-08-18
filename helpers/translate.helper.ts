@@ -6,3 +6,22 @@ export const moveLanguageToTop = (languageList: Language[], item: Language) => {
 
   return languageList;
 };
+
+export const handlePaste = (event: ClipboardEvent) => {
+  event.preventDefault();
+
+  const plainText = event.clipboardData?.getData('text/plain');
+
+  if (plainText) {
+    const formattedText = formatPastedContent(plainText);
+    document.execCommand('insertHTML', false, formattedText);
+  }
+}
+
+export const formatPastedContent = (text: string): string => {
+	const lines = text.replaceAll('\r','').split('\n');
+	const formattedLines = lines.filter(line => line !== '').map(line => `<p>${line}</p>`);
+
+  return formattedLines.join('<br>');
+}
+

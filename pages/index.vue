@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {moveLanguageToTop} from '../helpers/translate.helper';
+import {formatPastedContent, moveLanguageToTop} from '../helpers/translate.helper';
 import {Language} from '../types/index';
 import {getSupportedLanguages} from '../api/language';
+import {translateGenerateResult} from '../api/translate';
 
 enum EOPTIONSTRANSLATE {
   TEXT = 'text',
@@ -21,7 +22,8 @@ const currentLanguageOut: Language = reactive({
 const state = reactive<{
   languagesListIn: Language[];
   languagesListOut: Language[];
-  transitionContent: string;
+  transitionContent: any;
+  translateLoading: boolean;
 }>({
   languagesListIn: [],
   languagesListOut: [
@@ -31,6 +33,7 @@ const state = reactive<{
     },
   ],
   transitionContent: 'Bản dịch',
+  translateLoading: false,
 });
 const languagesListIn = computed(() => {
   return moveLanguageToTop(state.languagesListIn, currentLanguageIn);
@@ -39,19 +42,40 @@ const languagesListOut = computed(() => {
   return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
 });
 
-const { data: dataLanguages } = await useAsyncData('languages', () => getSupportedLanguages());
+const {data: dataLanguages} = await useAsyncData('languages', () => getSupportedLanguages());
 
-const handleTextAreaChange = (value: string) => {
-  console.log(value);
+const handleTextAreaChange = async (value: string, isValid: boolean) => {
+  if (value === '' || !isValid) {
+    state.transitionContent = 'Bản dịch';
+    return;
+  }
+
+  state.translateLoading = true;
+  const payload = {
+    text: formatPastedContent(value),
+    source: '',
+    target: currentLanguageOut.language,
+  };
+
+  const {data: dataTranslate} = await useAsyncData(
+    'translate',
+    () => translateGenerateResult(payload),
+    {
+      server: false,
+    },
+  );
+
+  state.translateLoading = false;
+  state.transitionContent = dataTranslate.value?.data;
 };
 const handleSelectedLanguageIn = (language: Language) => {
   console.log('selected in', language);
   buttonLanguageIn.value.$el.click();
-}
+};
 const handleSelectedLanguageOut = (language: Language) => {
   console.log('selected out', language);
   buttonLanguageOut.value.$el.click();
-}
+};
 </script>
 <template>
   <UiWrapperContent>
@@ -78,7 +102,9 @@ const handleSelectedLanguageOut = (language: Language) => {
           </div>
           <ul v-if="currentLanguageIn.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListIn" :key="language.language">
-              <UiTextTag :active="language.language === currentLanguageIn.language">{{ language.name }}</UiTextTag>
+              <UiTextTag :active="language.language === currentLanguageIn.language">{{
+                language.name
+              }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
@@ -96,7 +122,10 @@ const handleSelectedLanguageOut = (language: Language) => {
               leaveTo="opacity-0"
             >
               <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-                <UiSearchPannel :language-list="dataLanguages" @selected-language="handleSelectedLanguageIn"/>
+                <UiSearchPannel
+                  :language-list="dataLanguages"
+                  @selected-language="handleSelectedLanguageIn"
+                />
               </HeadlessPopoverPanel>
             </HeadlessTransitionRoot>
           </HeadlessPopover>
@@ -130,12 +159,20 @@ const handleSelectedLanguageOut = (language: Language) => {
               leaveTo="opacity-0"
             >
               <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-                <UiSearchPannel :language-list="dataLanguages" :language-active="currentLanguageOut.language" @selected-language="handleSelectedLanguageOut"/>
+                <UiSearchPannel
+                  :language-list="dataLanguages"
+                  :language-active="currentLanguageOut.language"
+                  @selected-language="handleSelectedLanguageOut"
+                />
               </HeadlessPopoverPanel>
             </HeadlessTransitionRoot>
           </HeadlessPopover>
         </div>
-        <UiTextArea :loading="false">{{ state.transitionContent }}</UiTextArea>
+        <UiTextArea :loading="false">
+          <span class="" v-html="state.transitionContent" /><span v-if="state.translateLoading"
+            >...</span
+          >
+        </UiTextArea>
       </div>
     </div>
   </UiWrapperContent>

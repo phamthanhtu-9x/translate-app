@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {handlePaste} from '../../helpers/translate.helper';
+
 interface TextAreaProps {
   focus?: boolean;
   edited?: boolean;
@@ -10,8 +12,12 @@ const textAreaRef = ref();
 
 const handleChange = () => {
   const WAITING_TIME = 1000;
+  let isValid = true;
   const changeDebounce = _debounce(() => {
-    emit('onChangeTextarea', textAreaRef.value.innerText);
+    if (typeof textAreaRef.value.querySelector('p').firstChild.innerText === "string") {
+      isValid = false;
+    }
+    emit('onChangeTextarea', textAreaRef.value.innerText, isValid);
   }, WAITING_TIME);
   changeDebounce();
 };
@@ -33,6 +39,7 @@ onMounted(() => {
     }"
     :contenteditable="edited ? true : false"
     @keydown="handleChange"
+    @paste="handlePaste"
   >
     <div v-if="loading" class="w-full p-5 text-center">
       <UiCircleLoading />
