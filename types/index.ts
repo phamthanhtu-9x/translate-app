@@ -11,6 +11,6 @@ export type TranslatePayLoad = {
 
 export type FormDataPayLoad = {
 	name?: string,
-    email: string,
-    password: string | number
+  email: string,
+  password: string | number
 }
