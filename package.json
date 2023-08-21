@@ -9,7 +9,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint-fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
-    "format": "prettier --write \"**/*.{vue,js,ts,json,html}\""
+    "format": "prettier --write \"**/*.{vue,js,ts,json,html}\"",
+    "start": "nuxt start"
   },
   "dependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.0.0",

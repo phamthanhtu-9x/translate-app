@@ -8,3 +8,9 @@ export type TranslatePayLoad = {
 	source: string,
 	target: string,
 }
+
+export type FormDataPayLoad = {
+	name?: string,
+    email: string,
+    password: string | number
+}
