@@ -48,6 +48,7 @@ const languagesListOut = computed(() => {
 const {data: dataLanguages} = await useAsyncData('languages', () => getSupportedLanguages());
 
 const getLanguageName = (source: string) => {
+  if (dataLanguages.value?.data.languages === undefined) return;
   return dataLanguages.value?.data.languages.find(
     (language: Language) => language.language === source,
   ).name;
@@ -87,11 +88,15 @@ const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef
 
 const handleSelectedLanguageIn = (language: Language) => {
   console.log('selected in', language);
+
+  // Close pannel
   buttonLanguageIn.value.$el.click();
 };
 
 const handleSelectedLanguageOut = (language: Language) => {
   console.log('selected out', language);
+
+  // Close pannel
   buttonLanguageOut.value.$el.click();
 };
 
