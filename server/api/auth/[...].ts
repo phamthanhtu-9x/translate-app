@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 const runtimeConfig = useRuntimeConfig();
 
 export default NuxtAuthHandler({
+  secret: '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',
   pages: {
     // Change the default behavior to use `/login` as the path for the sign-in page
     signIn: '/login',
