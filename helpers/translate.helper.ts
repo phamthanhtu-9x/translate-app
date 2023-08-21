@@ -7,6 +7,13 @@ export const moveLanguageToTop = (languageList: Language[], item: Language) => {
   return languageList;
 };
 
+export const addLanguageToList = (languageList: Language[], item: Language) => {
+  languageList = languageList.filter((language) => language.language !== item.language);
+  languageList.push(item);
+
+  return languageList;
+}
+
 export const handlePaste = (event: ClipboardEvent) => {
   event.preventDefault();
 

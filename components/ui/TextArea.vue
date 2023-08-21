@@ -17,7 +17,7 @@ const handleChange = () => {
     if (typeof textAreaRef.value.querySelector('p').firstChild.innerText === "string") {
       isValid = false;
     }
-    emit('onChangeTextarea', textAreaRef.value.innerText, isValid);
+    emit('onChangeTextarea', textAreaRef.value.innerText, isValid, textAreaRef);
   }, WAITING_TIME);
   changeDebounce();
 };
@@ -40,7 +40,7 @@ onMounted(() => {
     :contenteditable="edited ? true : false"
     @keydown="handleChange"
     @paste="handlePaste"
-  >
+    >
     <div v-if="loading" class="w-full p-5 text-center">
       <UiCircleLoading />
     </div>
