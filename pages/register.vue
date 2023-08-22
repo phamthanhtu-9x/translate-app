@@ -57,7 +57,7 @@ const onSubmit = handleSubmit( async (values : any) => {
         </h1>
 
         <div class="mb-4">
-          <UiTextInput name="name" placeholder="Name" autofocus="true" />
+          <UiTextInput name="name" placeholder="Name" autofocus />
         </div>
 
         <div class="mb-4">
