@@ -144,11 +144,9 @@ const handleSwapTranslate = () => {
           </div>
           <ul v-if="currentLanguageIn.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListIn" :key="language.language">
-              <ClientOnly>
-                <UiTextTag :active="language.language === currentLanguageIn.language">{{
-                  getLanguageName(dataLanguages.data.languages, language.language)
-                }}</UiTextTag>
-              </ClientOnly>
+              <UiTextTag :active="language.language === currentLanguageIn.language">{{
+                getLanguageName(dataLanguages.data.languages, language.language)
+              }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
@@ -183,11 +181,9 @@ const handleSwapTranslate = () => {
         <div class="flex px-5 mb-5 space-x-3">
           <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListOut" :key="language.language">
-              <ClientOnly>
-                <UiTextTag :active="language.language === currentLanguageOut.language">
-                  {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
-                >
-              </ClientOnly>
+              <UiTextTag :active="language.language === currentLanguageOut.language">
+                {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
+              >
             </li>
           </ul>
           <HeadlessPopover>
