@@ -60,7 +60,7 @@ const onSubmit = handleSubmit((values : any) => {
           Log in to your account
         </h1>
         <div class="mb-4">
-          <UiTextInput name="email" type="email" placeholder="Email" autofocus="true" />
+          <UiTextInput name="email" type="email" placeholder="Email" autofocus />
         </div>
 
         <div class="mb-6">

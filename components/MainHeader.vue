@@ -29,12 +29,12 @@ const handleSignOut = () => {
         <NuxtLink to="/">
           <div class="text-3xl font-medium text-blue-500 logo">Translate</div>
         </NuxtLink>
-        <Button v-if="status !== 'authenticated'" @click="signIn">Login</Button>
+        <button v-if="status !== 'authenticated'" @click="signIn">Login</button>
         <div v-else class="flex items-center space-x-3">
           <div class="px-3 py-1 border rounded-md">
             <UiTextNormal>{{ user.name }}</UiTextNormal>
           </div>
-          <Button @click="handleSignOut">Logout</Button>
+          <button @click="handleSignOut">Logout</button>
         </div>
       </div>
     </UiWrapperContent>
