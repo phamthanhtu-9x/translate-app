@@ -100,6 +100,8 @@ const handleSelectedLanguageOut = (language: Language) => {
 };
 
 const handleSwapTranslate = () => {
+  if (state.translationContent === ETRANSLATE.PLACEHOLDER) return;
+
   const temp = {
     content: state.translationContent,
     language: currentLanguageOut.language,
@@ -134,7 +136,7 @@ const handleSwapTranslate = () => {
         :active="currentOption === EOPTIONSTRANSLATE.FILE ? true : false"
       />
     </div>
-    <div class="flex">
+    <div v-if="dataLanguages" class="flex">
       <div class="relative flex-1">
         <div class="flex items-center px-5 mb-5 space-x-3">
           <div>
@@ -212,6 +214,9 @@ const handleSwapTranslate = () => {
           <span v-html="state.translationContent"></span>
         </UiTextArea>
       </div>
+    </div>
+    <div v-else class="flex justify-center">
+      <UiCircleLoading />
     </div>
   </UiWrapperContent>
 </template>
