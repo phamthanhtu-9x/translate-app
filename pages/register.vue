@@ -3,6 +3,10 @@ import {useForm} from 'vee-validate';
 import * as yup from 'yup';
 import {register} from '../api/user';
 
+definePageMeta({
+  middleware: ['auth'],
+});
+
 const {signIn} = useAuth();
 let submitting = ref();
 
