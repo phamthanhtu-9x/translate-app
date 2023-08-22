@@ -1,9 +1,26 @@
 <script setup lang="ts">
+import {useToast} from 'tailvue';
+const $toast = useToast();
+
 const {status, signIn, signOut, data} = useAuth();
 const user = ref();
-if (status.value === 'authenticated'){
-  user.value = data.value?.user
+const isToastShown = localStorage.getItem('isToastShown');
+
+if (status.value === 'authenticated') {
+  user.value = data.value?.user;
 }
+
+if (status.value === 'authenticated' && !isToastShown) {
+  $toast.success('Success!! 🎉')
+  localStorage.setItem('isToastShown', 'true');
+
+  user.value = data.value?.user;
+}
+
+const handleSignOut = () => {
+  localStorage.removeItem('isToastShown');
+  signOut();
+};
 </script>
 <template>
   <header>
@@ -17,7 +34,7 @@ if (status.value === 'authenticated'){
           <div class="px-3 py-1 border rounded-md">
             <UiTextNormal>{{ user.name }}</UiTextNormal>
           </div>
-          <Button  @click="signOut">Logout</Button>
+          <Button @click="handleSignOut">Logout</Button>
         </div>
       </div>
     </UiWrapperContent>

@@ -1,9 +1,11 @@
 <template>
   <div class="default">
-    <MainHeader />
-    <MainContent>
-      <slot />
-    </MainContent>
-    <MainFooter />
+   <client-only>
+      <MainHeader />
+      <MainContent>
+        <slot />
+      </MainContent>
+      <MainFooter />
+  </client-only>
   </div>
 </template>
