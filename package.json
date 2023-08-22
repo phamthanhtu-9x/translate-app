@@ -15,6 +15,7 @@
   "dependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@pinia/nuxt": "^0.4.11",
+    "@tailvue/nuxt": "^1.0.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vee-validate/nuxt": "^4.11.1",
     "pinia": "^2.1.6",
@@ -22,6 +23,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@iconify/vue": "^4.1.1",
     "@nuxt/devtools": "latest",
     "@nuxt/typescript-build": "^3.0.1",
     "@nuxtjs/google-fonts": "^3.0.2",

@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt', '@sidebase/nuxt-auth', 'nuxt-headlessui', 'nuxt-lodash', '@vee-validate/nuxt'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', 'nuxt-icon', '@pinia/nuxt', '@sidebase/nuxt-auth', 'nuxt-headlessui', 'nuxt-lodash', '@vee-validate/nuxt', '@tailvue/nuxt'],
   head: {
     charset: 'utf-8',
     viewport: 'width=device-width, initial-scale=1',
