@@ -12,7 +12,7 @@ export const addLanguageToList = (languageList: Language[], item: Language) => {
   languageList.push(item);
 
   return languageList;
-}
+};
 
 export const handlePaste = (event: ClipboardEvent) => {
   event.preventDefault();
@@ -23,12 +23,16 @@ export const handlePaste = (event: ClipboardEvent) => {
     const formattedText = formatPastedContent(plainText);
     document.execCommand('insertHTML', false, formattedText);
   }
-}
+};
 
 export const formatPastedContent = (text: string): string => {
-	const lines = text.replaceAll('\r','').split('\n');
-	const formattedLines = lines.filter(line => line !== '').map(line => `<p>${line}</p>`);
+  const lines = text.replaceAll('\r', '').split('\n');
+  const formattedLines = lines.filter((line) => line !== '').map((line) => `<p>${line}</p>`);
 
   return formattedLines.join('<br>');
-}
+};
 
+export const getLanguageName = (languages: any, source: string) => {
+  if (languages === undefined) return;
+  return languages.find((language: Language) => language.language === source).name;
+};

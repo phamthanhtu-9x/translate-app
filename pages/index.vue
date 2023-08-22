@@ -3,24 +3,18 @@ import {
   formatPastedContent,
   moveLanguageToTop,
   addLanguageToList,
+  getLanguageName,
 } from '../helpers/translate.helper';
 import {Language} from '../types/index';
 import {getSupportedLanguages} from '../api/language';
 import {translateGenerateResult} from '../api/translate';
-
-enum EOPTIONSTRANSLATE {
-  TEXT = 'text',
-  FILE = 'file',
-}
-enum ETRANSLATE {
-  PLACEHOLDER = 'Bản dịch',
-  LANGUAGE_OUT_DEFAULT = 'vi',
-}
+import {EOPTIONSTRANSLATE, ETRANSLATE} from '../enums/translate';
 
 const buttonLanguageIn = ref();
 const buttonLanguageOut = ref();
 const contentInRef = ref();
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
+
 const currentLanguageIn: Language = reactive({
   language: '',
 });
@@ -42,30 +36,25 @@ const state = reactive<{
   translationContent: ETRANSLATE.PLACEHOLDER,
   translateLoading: false,
 });
-const languagesListIn = computed(() => {
-  return moveLanguageToTop(state.languagesListIn, currentLanguageIn);
-});
-const languagesListOut = computed(() => {
-  return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
-});
 
 const {data: dataLanguages}: {data: Ref} = await useAsyncData('languages', () =>
   getSupportedLanguages(),
 );
 
-const getLanguageName = (source: string) => {
-  if (dataLanguages.value?.data.languages === undefined) return;
-  return dataLanguages.value?.data.languages.find(
-    (language: Language) => language.language === source,
-  ).name;
-};
+const languagesListIn = computed(() => {
+  return moveLanguageToTop(state.languagesListIn, currentLanguageIn);
+});
+
+const languagesListOut = computed(() => {
+  return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
+});
 
 const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef: any) => {
   if (value === '' || !isValid) {
     state.translationContent = ETRANSLATE.PLACEHOLDER;
     return;
   }
-
+  // Get textareaRef from TextArea Component
   contentInRef.value = textAreaRef.value;
 
   state.translateLoading = true;
@@ -87,7 +76,10 @@ const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef
   state.translationContent = dataTranslate.value?.data;
 
   if (currentLanguageIn.language !== dataTranslate.value?.source) {
-    currentLanguageIn.name = getLanguageName(dataTranslate.value?.source);
+    currentLanguageIn.name = getLanguageName(
+      dataLanguages.value.data?.languages,
+      dataTranslate.value?.source,
+    );
     currentLanguageIn.language = dataTranslate.value?.source;
   }
 };
@@ -152,7 +144,7 @@ const handleSwapTranslate = () => {
           <ul v-if="currentLanguageIn.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListIn" :key="language.language">
               <UiTextTag :active="language.language === currentLanguageIn.language">{{
-                getLanguageName(language.language)
+                getLanguageName(dataLanguages.data.languages, language.language)
               }}</UiTextTag>
             </li>
           </ul>
@@ -189,7 +181,7 @@ const handleSwapTranslate = () => {
           <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListOut" :key="language.language">
               <UiTextTag :active="language.language === currentLanguageOut.language">{{
-                getLanguageName(language.language)
+                getLanguageName(dataLanguages.data.languages, language.language)
               }}</UiTextTag>
             </li>
           </ul>
@@ -218,7 +210,7 @@ const handleSwapTranslate = () => {
           </HeadlessPopover>
         </div>
         <UiTextArea :loading="state.translateLoading">
-          <span v-html="state.translationContent" />
+          <span v-html="state.translationContent"></span>
         </UiTextArea>
       </div>
     </div>
