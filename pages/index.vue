@@ -81,6 +81,7 @@ const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef
       dataTranslate.value?.source,
     );
     currentLanguageIn.language = dataTranslate.value?.source;
+    state.languagesListIn = addLanguageToList(state.languagesListIn, currentLanguageIn.language);
   }
 };
 
@@ -109,10 +110,8 @@ const handleSwapTranslate = () => {
     contentInRef.value.innerHTML = temp.content;
   }
 
-  state.languagesListOut = [];
-
-  state.languagesListIn = addLanguageToList(state.languagesListIn, currentLanguageOut);
-  state.languagesListOut = addLanguageToList(state.languagesListOut, currentLanguageIn);
+  state.languagesListIn = addLanguageToList(state.languagesListIn, currentLanguageOut.language);
+  state.languagesListOut = addLanguageToList(state.languagesListOut, currentLanguageIn.language);
 
   currentLanguageOut.language = currentLanguageIn.language;
   currentLanguageIn.language = temp.language;
@@ -128,7 +127,7 @@ const handleSwapTranslate = () => {
         :active="currentOption === EOPTIONSTRANSLATE.TEXT ? true : false"
       />
       <UiOptionCard
-        title="Translate files"
+        title="Translate file"
         desc=".pdf, .docx"
         icon="streamline:interface-file-clipboard-text-edition-form-task-checklist-edit-clipboard"
         :disabled="true"

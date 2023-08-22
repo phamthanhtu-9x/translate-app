@@ -1,3 +1,11 @@
+export type ApiProps = {
+  url: string;
+  method: any;
+  params?: any;
+  body?: any;
+  hasAuth: boolean;
+}
+
 export type Language = {
   name?: string;
   language: string;

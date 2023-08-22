@@ -1,15 +1,9 @@
-type ApiProps = {
-  url: string;
-  method: any;
-  params?: any;
-  body?: any;
-  hasAuth: boolean;
-}
+import {ApiProps} from 'types';
 
 export const api = (props: ApiProps) => {
   const {url, method, hasAuth, params, body} = props;
   const runtimeConfig = useRuntimeConfig();
-  const {data} : any = useAuth();
+  const {data}: any = useAuth();
 
   return $fetch(`${runtimeConfig.public.apiBase + '/api' + url}`, {
     headers: {
@@ -18,6 +12,6 @@ export const api = (props: ApiProps) => {
     },
     method,
     body,
-    params
+    params,
   });
 };
