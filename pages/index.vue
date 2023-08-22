@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import {formatPastedContent, moveLanguageToTop, addLanguageToList} from '../helpers/translate.helper';
+import {
+  formatPastedContent,
+  moveLanguageToTop,
+  addLanguageToList,
+} from '../helpers/translate.helper';
 import {Language} from '../types/index';
 import {getSupportedLanguages} from '../api/language';
 import {translateGenerateResult} from '../api/translate';
@@ -45,7 +49,9 @@ const languagesListOut = computed(() => {
   return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
 });
 
-const {data: dataLanguages} = await useAsyncData('languages', () => getSupportedLanguages());
+const {data: dataLanguages}: {data: Ref} = await useAsyncData('languages', () =>
+  getSupportedLanguages(),
+);
 
 const getLanguageName = (source: string) => {
   if (dataLanguages.value?.data.languages === undefined) return;
@@ -69,7 +75,7 @@ const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef
     target: currentLanguageOut.language,
   };
 
-  const {data: dataTranslate} = await useAsyncData(
+  const {data: dataTranslate}: {data: Ref} = await useAsyncData(
     'translate',
     () => translateGenerateResult(payload),
     {
@@ -109,8 +115,8 @@ const handleSwapTranslate = () => {
   if (state.translationContent !== ETRANSLATE.PLACEHOLDER) {
     state.translationContent = contentInRef.value.innerHTML;
     contentInRef.value.innerHTML = temp.content;
-  };
- 
+  }
+
   state.languagesListOut = [];
 
   state.languagesListIn = addLanguageToList(state.languagesListIn, currentLanguageOut);
@@ -118,7 +124,7 @@ const handleSwapTranslate = () => {
 
   currentLanguageOut.language = currentLanguageIn.language;
   currentLanguageIn.language = temp.language;
-}
+};
 </script>
 <template>
   <UiWrapperContent>
