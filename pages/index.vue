@@ -154,7 +154,7 @@ const handleSwapTranslate = () => {
     </div>
     <div class="flex">
       <div class="relative flex-1">
-        <div class="flex items-center px-5 mb-5 space-x-3">
+        <div class="flex items-center px-5 mb-5 space-x-3 min-h-[34px]">
           <div>
             <UiTextNormal>Detect language</UiTextNormal>
           </div>
