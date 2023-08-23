@@ -21,6 +21,10 @@ const {handleSubmit} = useForm({
       .required('Please enter your email.')
       .email('Please enter a valid email address.'),
     password: yup.string().required('Please enter your password').min(6),
+    confirm_password: yup
+      .string()
+      .required('Please enter your password')
+      .oneOf([yup.ref('password')], 'Passwords do not match')
   }),
 });
 
@@ -66,6 +70,10 @@ const onSubmit = handleSubmit( async (values : any) => {
 
         <div class="mb-6">
           <UiTextInput name="password" type="password" placeholder="Password" />
+        </div>
+
+        <div class="mb-6">
+          <UiTextInput name="confirm_password" type="password" placeholder="Type it again" />
         </div>
 
         <div class="flex items-center justify-between flex-col">
