@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   formatPastedContent,
-  moveLanguageToTop,
+  sortLanguages,
   addLanguageToList,
   getLanguageName,
 } from '../helpers/translate.helper';
@@ -42,20 +42,22 @@ const {data: dataLanguages}: {data: Ref} = await useAsyncData('languages', () =>
 );
 
 const languagesListIn = computed(() => {
-  return moveLanguageToTop(state.languagesListIn, currentLanguageIn);
+  return sortLanguages(state.languagesListIn);
 });
 
 const languagesListOut = computed(() => {
-  return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
+  return sortLanguages(state.languagesListOut);
 });
 
-const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef: any) => {
+const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef?: any) => {
   if (value === '' || !isValid) {
     state.translationContent = ETRANSLATE.PLACEHOLDER;
     return;
   }
   // Get textareaRef from TextArea Component
-  contentInRef.value = textAreaRef.value;
+  if (textAreaRef) {
+    contentInRef.value = textAreaRef.value;
+  }
 
   state.translateLoading = true;
   const payload = {
@@ -92,11 +94,34 @@ const handleSelectedLanguageIn = (language: Language) => {
   buttonLanguageIn.value.$el.click();
 };
 
-const handleSelectedLanguageOut = (language: Language) => {
-  console.log('selected out', language);
-
+const handleSelectedLanguageOut = async (language: Language) => {
   // Close pannel
   buttonLanguageOut.value.$el.click();
+  
+  currentLanguageOut.name = language.name;
+  currentLanguageOut.language = language.language;
+  state.languagesListOut = addLanguageToList(state.languagesListOut, language.language);
+  
+  if(state.translationContent === ETRANSLATE.PLACEHOLDER) return;
+
+  state.translateLoading = true;
+
+  const payload = {
+    text: state.translationContent,
+    source: '',
+    target: currentLanguageOut.language,
+  };
+
+  const {data: dataTranslate}: {data: Ref} = await useAsyncData(
+    'translate',
+    () => translateGenerateResult(payload),
+    {
+      server: false,
+    },
+  );
+
+  state.translateLoading = false;
+  state.translationContent = dataTranslate.value?.data;
 };
 
 const handleSwapTranslate = () => {
@@ -144,11 +169,9 @@ const handleSwapTranslate = () => {
           </div>
           <ul v-if="currentLanguageIn.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListIn" :key="language.language">
-              <ClientOnly>
-                <UiTextTag :active="language.language === currentLanguageIn.language">{{
-                  getLanguageName(dataLanguages.data.languages, language.language)
-                }}</UiTextTag>
-              </ClientOnly>
+              <UiTextTag :active="language.language === currentLanguageIn.language">{{
+                getLanguageName(dataLanguages.data.languages, language.language)
+              }}</UiTextTag>
             </li>
           </ul>
           <HeadlessPopover>
@@ -168,6 +191,7 @@ const handleSwapTranslate = () => {
               <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
                 <UiSearchPannel
                   :language-list="dataLanguages"
+                  :language-active="currentLanguageIn.language"
                   @selected-language="handleSelectedLanguageIn"
                 />
               </HeadlessPopoverPanel>
@@ -183,11 +207,9 @@ const handleSwapTranslate = () => {
         <div class="flex px-5 mb-5 space-x-3">
           <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListOut" :key="language.language">
-              <ClientOnly>
-                <UiTextTag :active="language.language === currentLanguageOut.language">
-                  {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
-                >
-              </ClientOnly>
+              <UiTextTag :active="language.language === currentLanguageOut.language">
+                {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
+              >
             </li>
           </ul>
           <HeadlessPopover>

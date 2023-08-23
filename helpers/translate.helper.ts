@@ -1,9 +1,8 @@
+import { Language } from './../types/index';
 import {ECONFIG} from '../enums/translate';
-import {Language} from '../types/index';
 
-export const moveLanguageToTop = (languageList: Language[], item: Language) => {
+export const sortLanguages = (languageList: Language[]) => {
   languageList = languageList.slice(0, ECONFIG.LIMIT_LANGUAGE);
-
   return languageList;
 };
 
@@ -11,14 +10,16 @@ export const addLanguageToList = (languageList: Language[], language: string) =>
   const index = languageList.findIndex((lang) => lang.language === language);
   const hasLanguage = index !== -1;
 
-  if (!hasLanguage) {
-    languageList.push({
-      language: language,
-    });
+  if (hasLanguage) {
+    languageList.splice(index, 1);
   }
+  languageList.unshift({
+    language,
+  })
+
 
   return languageList;
-};
+}
 
 export const handlePaste = (event: ClipboardEvent) => {
   event.preventDefault();
