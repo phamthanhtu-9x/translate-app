@@ -39,6 +39,6 @@ export const formatPastedContent = (text: string): string => {
 };
 
 export const getLanguageName = (languages: any, source: string) => {
-  if (languages === undefined) return;
+  if (languages.length === 0) return;
   return languages.find((language: Language) => language.language === source).name;
 };
