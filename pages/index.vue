@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   formatPastedContent,
-  moveLanguageToTop,
+  sortLanguages,
   addLanguageToList,
   getLanguageName,
 } from '../helpers/translate.helper';
@@ -10,7 +10,6 @@ import {getSupportedLanguages} from '../api/language';
 import {translateGenerateResult} from '../api/translate';
 import {EOPTIONSTRANSLATE, ETRANSLATE} from '../enums/translate';
 
-const buttonLanguageIn = ref();
 const buttonLanguageOut = ref();
 const contentInRef = ref();
 const currentOption = ref<EOPTIONSTRANSLATE>(EOPTIONSTRANSLATE.TEXT);
@@ -22,12 +21,10 @@ const currentLanguageOut: Language = reactive({
   language: ETRANSLATE.LANGUAGE_OUT_DEFAULT,
 });
 const state = reactive<{
-  languagesListIn: Language[];
   languagesListOut: Language[];
   translationContent: any;
   translateLoading: boolean;
 }>({
-  languagesListIn: [],
   languagesListOut: [
     {
       language: ETRANSLATE.LANGUAGE_OUT_DEFAULT,
@@ -41,21 +38,19 @@ const {data: dataLanguages}: {data: Ref} = await useAsyncData('languages', () =>
   getSupportedLanguages(),
 );
 
-const languagesListIn = computed(() => {
-  return moveLanguageToTop(state.languagesListIn, currentLanguageIn);
-});
-
 const languagesListOut = computed(() => {
-  return moveLanguageToTop(state.languagesListOut, currentLanguageOut);
+  return sortLanguages(state.languagesListOut);
 });
 
-const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef: any) => {
+const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef?: any) => {
   if (value === '' || !isValid) {
     state.translationContent = ETRANSLATE.PLACEHOLDER;
     return;
   }
   // Get textareaRef from TextArea Component
-  contentInRef.value = textAreaRef.value;
+  if (textAreaRef) {
+    contentInRef.value = textAreaRef.value;
+  }
 
   state.translateLoading = true;
   const payload = {
@@ -81,22 +76,44 @@ const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef
       dataTranslate.value?.source,
     );
     currentLanguageIn.language = dataTranslate.value?.source;
-    state.languagesListIn = addLanguageToList(state.languagesListIn, currentLanguageIn.language);
   }
 };
 
-const handleSelectedLanguageIn = (language: Language) => {
-  console.log('selected in', language);
+const handleSelectedLanguageOut = async (language: Language, isSwitch?: boolean) => {
+  if (!isSwitch) {
+    // Close pannel
+    buttonLanguageOut.value.$el.click();
+  }
 
-  // Close pannel
-  buttonLanguageIn.value.$el.click();
-};
+  if (language.language === currentLanguageIn.language) return;
 
-const handleSelectedLanguageOut = (language: Language) => {
-  console.log('selected out', language);
+  currentLanguageOut.name = language.name;
+  currentLanguageOut.language = language.language;
 
-  // Close pannel
-  buttonLanguageOut.value.$el.click();
+  if (!isSwitch) {
+    state.languagesListOut = addLanguageToList(state.languagesListOut, language.language);
+  }
+
+  if (state.translationContent === ETRANSLATE.PLACEHOLDER) return;
+
+  state.translateLoading = true;
+
+  const payload = {
+    text: state.translationContent,
+    source: '',
+    target: currentLanguageOut.language,
+  };
+
+  const {data: dataTranslate}: {data: Ref} = await useAsyncData(
+    'translate',
+    () => translateGenerateResult(payload),
+    {
+      server: false,
+    },
+  );
+
+  state.translateLoading = false;
+  state.translationContent = dataTranslate.value?.data;
 };
 
 const handleSwapTranslate = () => {
@@ -112,7 +129,6 @@ const handleSwapTranslate = () => {
     contentInRef.value.innerHTML = temp.content;
   }
 
-  state.languagesListIn = addLanguageToList(state.languagesListIn, currentLanguageOut.language);
   state.languagesListOut = addLanguageToList(state.languagesListOut, currentLanguageIn.language);
 
   currentLanguageOut.language = currentLanguageIn.language;
@@ -136,43 +152,19 @@ const handleSwapTranslate = () => {
         :active="currentOption === EOPTIONSTRANSLATE.FILE ? true : false"
       />
     </div>
-    <div v-if="dataLanguages" class="flex">
+    <div class="flex">
       <div class="relative flex-1">
         <div class="flex items-center px-5 mb-5 space-x-3">
           <div>
             <UiTextNormal>Detect language</UiTextNormal>
           </div>
           <ul v-if="currentLanguageIn.language !== ''" class="flex space-x-3">
-            <li v-for="language in languagesListIn" :key="language.language">
-              <ClientOnly>
-                <UiTextTag :active="language.language === currentLanguageIn.language">{{
-                  getLanguageName(dataLanguages.data.languages, language.language)
-                }}</UiTextTag>
-              </ClientOnly>
+            <li>
+              <UiTextTag :active="true">{{
+                getLanguageName(dataLanguages.data.languages, currentLanguageIn.language)
+              }}</UiTextTag>
             </li>
           </ul>
-          <HeadlessPopover>
-            <HeadlessPopoverButton ref="buttonLanguageIn" class="outline-none">
-              <UiCirlceButton>
-                <Icon name="mdi:chevron-down" size="1.5em" color="gray" />
-              </UiCirlceButton>
-            </HeadlessPopoverButton>
-            <HeadlessTransitionRoot
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <HeadlessPopoverPanel class="absolute left-0 z-10 top-[54px] w-full">
-                <UiSearchPannel
-                  :language-list="dataLanguages"
-                  @selected-language="handleSelectedLanguageIn"
-                />
-              </HeadlessPopoverPanel>
-            </HeadlessTransitionRoot>
-          </HeadlessPopover>
         </div>
         <UiTextArea :edited="true" :focus="true" @onChangeTextarea="handleTextAreaChange" />
       </div>
@@ -183,11 +175,12 @@ const handleSwapTranslate = () => {
         <div class="flex px-5 mb-5 space-x-3">
           <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListOut" :key="language.language">
-              <ClientOnly>
-                <UiTextTag :active="language.language === currentLanguageOut.language">
-                  {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
-                >
-              </ClientOnly>
+              <UiTextTag
+                :active="language.language === currentLanguageOut.language"
+                @click="handleSelectedLanguageOut(language, true)"
+              >
+                {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
+              >
             </li>
           </ul>
           <HeadlessPopover>
@@ -218,9 +211,6 @@ const handleSwapTranslate = () => {
           <span v-html="state.translationContent"></span>
         </UiTextArea>
       </div>
-    </div>
-    <div v-else class="flex justify-center">
-      <UiCircleLoading />
     </div>
   </UiWrapperContent>
 </template>
