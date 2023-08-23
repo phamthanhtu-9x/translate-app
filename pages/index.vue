@@ -80,22 +80,22 @@ const handleTextAreaChange = async (value: string, isValid: boolean, textAreaRef
 };
 
 const handleSelectedLanguageOut = async (language: Language, isSwitch?: boolean) => {
-  if(!isSwitch) {
+  if (!isSwitch) {
     // Close pannel
     buttonLanguageOut.value.$el.click();
   }
 
-  if(language.language === currentLanguageIn.language) return;
+  if (language.language === currentLanguageIn.language) return;
 
   currentLanguageOut.name = language.name;
   currentLanguageOut.language = language.language;
 
-  if(!isSwitch) {
+  if (!isSwitch) {
     state.languagesListOut = addLanguageToList(state.languagesListOut, language.language);
   }
 
   if (state.translationContent === ETRANSLATE.PLACEHOLDER) return;
-  
+
   state.translateLoading = true;
 
   const payload = {
@@ -175,7 +175,10 @@ const handleSwapTranslate = () => {
         <div class="flex px-5 mb-5 space-x-3">
           <ul v-if="currentLanguageOut.language !== ''" class="flex space-x-3">
             <li v-for="language in languagesListOut" :key="language.language">
-              <UiTextTag :active="language.language === currentLanguageOut.language" @click="handleSelectedLanguageOut(language, true)">
+              <UiTextTag
+                :active="language.language === currentLanguageOut.language"
+                @click="handleSelectedLanguageOut(language, true)"
+              >
                 {{ getLanguageName(dataLanguages.data.languages, language.language) }}</UiTextTag
               >
             </li>

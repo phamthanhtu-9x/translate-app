@@ -1,4 +1,4 @@
-import { Language } from './../types/index';
+import {Language} from './../types/index';
 import {ECONFIG} from '../enums/translate';
 
 export const sortLanguages = (languageList: Language[]) => {
@@ -15,11 +15,10 @@ export const addLanguageToList = (languageList: Language[], language: string) =>
   }
   languageList.unshift({
     language,
-  })
-
+  });
 
   return languageList;
-}
+};
 
 export const handlePaste = (event: ClipboardEvent) => {
   event.preventDefault();
